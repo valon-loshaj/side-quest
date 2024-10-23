@@ -1,0 +1,42 @@
+{
+	"version": "0.0.0",
+	"author": {
+		"email": "valonloshaj@gmail.com"
+	},
+	"description": "RPG themed task manager.",
+	"devDependencies": {
+		"vitest": "^2.1.3"
+	},
+	"engines": {
+		"node": ">=18.3.0"
+	},
+	"files": [
+		"lib/",
+		"package.json",
+		"LICENSE.md",
+		"README.md"
+	],
+	"license": "MIT",
+	"lint-staged": {
+		"*": "prettier --ignore-unknown --write"
+	},
+	"main": "./lib/index.js",
+	"name": "side-quest",
+	"publishConfig": {
+		"provenance": true
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/valon-loshaj/side-quest"
+	},
+	"scripts": {
+		"build": "tsup",
+		"format": "prettier .",
+		"lint": "eslint . --max-warnings 0",
+		"lint:knip": "knip",
+		"prepare": "husky",
+		"test": "vitest",
+		"tsc": "tsc"
+	},
+	"type": "module"
+}
