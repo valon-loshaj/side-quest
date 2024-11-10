@@ -13,7 +13,7 @@ export default defineConfig([
 	},
 	// Frontend config
 	{
-		entry: ["apps/frontend/src/index.ts"],
+		entry: ["apps/frontend/src/page.tsx"],
 		outDir: "apps/frontend/dist",
 		format: ["esm"],
 		dts: true,

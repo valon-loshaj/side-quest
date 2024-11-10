@@ -3,6 +3,7 @@ import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginN from "eslint-plugin-n";
 import { FlatCompat } from "@eslint/eslintrc";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -15,6 +16,14 @@ const compat = new FlatCompat({
 export default tseslint.config(
 	js.configs.recommended,
 	...tseslint.configs.recommended,
+	{
+		plugins: {
+			n: eslintPluginN,
+		},
+		rules: {
+			"n/no-missing-import": "error",
+		},
+	},
 	prettier,
 	...compat.config({
 		extends: ["plugin:import/typescript"],

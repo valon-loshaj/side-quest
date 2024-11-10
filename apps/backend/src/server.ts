@@ -1,7 +1,12 @@
-import app from "./app.js";
+// apps/backend/src/server.ts
+import { Server } from "http";
+import express from "express";
+import type { Express } from "express";
 
-const port = process.env.PORT || 3001;
+export function createServer(app: Express): Server {
+	return app.listen(process.env.PORT || 3001, () => {
+		console.log(`Server running on port ${process.env.PORT || 3001}`);
+	});
+}
 
-app.listen(port, () => {
-	console.log(`Server running on port ${port}`);
-});
+export type { Express, Server };
