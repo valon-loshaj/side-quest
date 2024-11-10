@@ -18,4 +18,4 @@ runs:
       shell: bash
       run: |
         pnpm install --no-frozen-lockfile
-        pnpm add -D eslint-plugin-n
+        pnpm add -Dw eslint-plugin-n eslint-config-prettier @eslint/eslintrc eslint-import-resolver-typescript eslint-plugin-import knip
