@@ -1,0 +1,18 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"keywords": [],
+	"license": "ISC",
+	"author": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"devDependencies": {
+		"prettier-plugin-curly": "^0.3.1",
+		"prettier-plugin-packagejson": "^2.5.3",
+		"prettier-plugin-sh": "^0.14.0",
+		"prisma": "^5.22.0"
+	}
+}
