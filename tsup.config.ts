@@ -4,20 +4,20 @@ import { defineConfig } from "tsup";
 export default defineConfig([
 	// Backend config
 	{
-		entry: ["packages/backend/src/index.ts"],
-		outDir: "packages/backend/dist",
+		entry: ["apps/backend/src/index.ts"],
+		outDir: "apps/backend/dist",
 		format: ["cjs", "esm"],
 		dts: true,
 		clean: true,
-		tsconfig: "./packages/backend/tsconfig.json",
+		tsconfig: "./apps/backend/tsconfig.json",
 	},
 	// Frontend config
 	{
-		entry: ["packages/frontend/src/index.ts"],
-		outDir: "packages/frontend/dist",
+		entry: ["apps/frontend/src/index.ts"],
+		outDir: "apps/frontend/dist",
 		format: ["esm"],
 		dts: true,
 		clean: true,
-		tsconfig: "./packages/frontend/tsconfig.json",
+		tsconfig: "./apps/frontend/tsconfig.json",
 	},
 ]);

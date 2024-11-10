@@ -19,7 +19,7 @@
 		"README.md"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "pnpm build:backend && pnpm build:frontend",
 		"build:backend": "tsup --config tsup.config.ts",
 		"build:frontend": "tsup --config tsup.config.ts",
 		"format": "prettier --write \"apps/**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" \"*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\"",

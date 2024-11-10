@@ -14,7 +14,7 @@ jobs:
           git commit -m "chore: update pnpm-lock.yaml" || true
           git push || true
       - run: pnpm build
-      - run: node ./packages/backend/dist/index.js
+      - run: node ./apps/backend/dist/index.js
   lint:
     name: Lint
     runs-on: ubuntu-latest
