@@ -1,5 +1,9 @@
-.all-contributorsrc
-.husky/
-coverage/
-lib/
+node_modules
+.next
+build
+dist
+coverage
 pnpm-lock.yaml
+.husky
+lib
+.all-contributorsrc
