@@ -1,4 +1,4 @@
-# action.yml
+# .github/actions/prepare/action.yml
 name: Prepare
 description: Prepares the repo for a typical CI job
 
@@ -16,13 +16,4 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install --frozen-lockfile
-
-    - name: Install dev dependencies
-      shell: bash
-      run: |
-        pnpm add -D eslint-config-prettier -w
-        pnpm add -D @eslint/eslintrc -w
-        pnpm add -D eslint-import-resolver-typescript -w
-        pnpm add -D eslint-plugin-import -w
-        pnpm add -D knip -w
+      run: pnpm install --no-frozen-lockfile
