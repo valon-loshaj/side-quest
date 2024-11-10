@@ -8,7 +8,7 @@
 	"printWidth": 80,
 	"overrides": [
 		{
-			"files": ".nvmrc",
+			"files": ["*.yaml", "*.yml", ".nvmrc"],
 			"options": {
 				"parser": "yaml"
 			}

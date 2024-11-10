@@ -1,72 +1,45 @@
-import eslint from "@eslint/js";
-import vitest from "@vitest/eslint-plugin";
-import n from "eslint-plugin-n";
+// eslint.config.js
+import js from "@eslint/js";
 import tseslint from "typescript-eslint";
+import eslintConfigPrettier from "eslint-config-prettier";
+import { FlatCompat } from "@eslint/eslintrc";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const compat = new FlatCompat({
+	baseDirectory: __dirname,
+});
 
 export default tseslint.config(
-	{
-		ignores: [
-			"coverage*",
-			"lib",
-			"node_modules",
-			"pnpm-lock.yaml",
-			"**/*.snap",
-		],
-	},
-	{
-		linterOptions: {
-			reportUnusedDisableDirectives: "error",
+	js.configs.recommended,
+	...tseslint.configs.recommended,
+	...compat.config({
+		extends: ["plugin:import/typescript"],
+		settings: {
+			"import/resolver": {
+				typescript: {
+					project: ["./apps/*/tsconfig.json"],
+				},
+				node: true,
+			},
 		},
-	},
-	eslint.configs.recommended,
-	n.configs["flat/recommended"],
-	...tseslint.config({
-		extends: tseslint.configs.recommendedTypeChecked,
-		files: ["**/*.js", "**/*.ts"],
+	}),
+	eslintConfigPrettier,
+	{
+		ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**"],
 		languageOptions: {
 			parserOptions: {
-				projectService: {
-					allowDefaultProject: ["*.*s", "eslint.config.js"],
-					defaultProject: "./tsconfig.json",
-				},
-				tsconfigRootDir: import.meta.dirname,
+				project: ["./tsconfig.json", "./apps/*/tsconfig.json"],
+				tsconfigRootDir: __dirname,
 			},
 		},
 		rules: {
-			// These on-by-default rules don't work well for this repo and we like them off.
-			"no-constant-condition": "off",
-
-			// These on-by-default rules work well for this repo if configured
-			"@typescript-eslint/no-unused-vars": ["error", { caughtErrors: "all" }],
-		},
-	}),
-	{
-		files: ["*.jsonc"],
-		rules: {
-			"jsonc/comma-dangle": "off",
-			"jsonc/no-comments": "off",
-			"jsonc/sort-keys": "error",
-		},
-	},
-	{
-		extends: [tseslint.configs.disableTypeChecked],
-		files: ["**/*.md/*.ts"],
-		rules: {
-			"n/no-missing-import": ["error", { allowModules: ["side-quest"] }],
-		},
-	},
-	{
-		files: ["**/*.test.*"],
-		languageOptions: {
-			globals: vitest.environments.env.globals,
-		},
-		plugins: { vitest },
-		rules: {
-			...vitest.configs.recommended.rules,
-
-			// These on-by-default rules aren't useful in test files.
-			"@typescript-eslint/no-unsafe-assignment": "off",
-			"@typescript-eslint/no-unsafe-call": "off",
+			"n/no-missing-import": "error",
+			"@typescript-eslint/no-unsafe-argument": "error",
+			"@typescript-eslint/no-unsafe-assignment": "error",
+			"@typescript-eslint/no-unsafe-call": "error",
+			"import/no-unresolved": "error",
 		},
 	}
 );

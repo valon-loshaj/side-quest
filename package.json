@@ -20,8 +20,10 @@
 	],
 	"scripts": {
 		"build": "tsup",
-		"format": "prettier --write \"apps/**/*.{ts,tsx,js,jsx,json,md,css}\" \"*.{ts,tsx,js,jsx,json,md,css}\"",
-		"format:check": "prettier --check \"apps/**/*.{ts,tsx,js,jsx,json,md,css}\" \"*.{ts,tsx,js,jsx,json,md,css}\"",
+		"build:backend": "tsup --config tsup.config.ts",
+		"build:frontend": "tsup --config tsup.config.ts",
+		"format": "prettier --write \"apps/**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" \"*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\"",
+		"format:check": "prettier --check \"apps/**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" \"*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\"",
 		"lint": "eslint . --max-warnings 0",
 		"lint:backend": "eslint apps/backend/src/**/*.ts",
 		"lint:frontend": "eslint apps/frontend/src/**/*.{ts,tsx}",
@@ -34,15 +36,20 @@
 		"*": "prettier --ignore-unknown --write"
 	},
 	"devDependencies": {
+		"@eslint/eslintrc": "^3.1.0",
 		"@vitest/eslint-plugin": "^1.1.8",
 		"eslint": "^9.14.0",
+		"eslint-import-resolver-typescript": "^3.6.3",
 		"eslint-plugin": "^1.0.1",
+		"eslint-plugin-import": "^2.31.0",
 		"eslint-plugin-n": "^17.13.1",
 		"husky": "^9.1.6",
+		"knip": "^5.36.5",
 		"prettier": "^3.3.3",
 		"prettier-plugin-curly": "^0.3.1",
 		"prettier-plugin-packagejson": "^2.5.3",
 		"prettier-plugin-sh": "^0.14.0",
+		"tsup": "^8.3.5",
 		"typescript-eslint": "^8.13.0",
 		"vitest": "^2.1.3"
 	},

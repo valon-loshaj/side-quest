@@ -5,8 +5,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
+      - run: pnpm install -D tsup
       - run: pnpm build
-      - run: node ./lib/index.js
+      - run: node ./packages/backend/dist/index.js
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -42,7 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
-      - run: pnpm tsc
+      - run: pnpm tsc --project apps/frontend/tsconfig.json
+      - run: pnpm tsc --project apps/backend/tsconfig.json
 
 name: CI
 
