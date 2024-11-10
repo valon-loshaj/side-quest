@@ -1,6 +1,7 @@
 // eslint.config.js
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
+import prettier from "eslint-config-prettier";
 import eslintConfigPrettier from "eslint-config-prettier";
 import { FlatCompat } from "@eslint/eslintrc";
 import path from "path";
@@ -14,6 +15,7 @@ const compat = new FlatCompat({
 export default tseslint.config(
 	js.configs.recommended,
 	...tseslint.configs.recommended,
+	prettier,
 	...compat.config({
 		extends: ["plugin:import/typescript"],
 		settings: {

@@ -5,7 +5,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
-      - run: pnpm install -D tsup
       - run: pnpm build
       - run: node ./packages/backend/dist/index.js
   lint:
