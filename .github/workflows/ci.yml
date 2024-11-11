@@ -16,6 +16,8 @@ jobs:
       - run: pnpm build
       - name: List dist directory contents
         run: ls -R apps/backend/dist
+      - name: List all files
+        run: find .
       - run: node apps/backend/dist/server.js
   lint:
     name: Lint
