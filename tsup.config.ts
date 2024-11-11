@@ -1,11 +1,23 @@
+// tsup.config.ts
 import { defineConfig } from "tsup";
 
-export default defineConfig({
-	bundle: false,
-	clean: true,
-	dts: true,
-	entry: ["src/**/*.ts", "!src/**/*.test.*"],
-	format: "esm",
-	outDir: "lib",
-	sourcemap: true,
-});
+export default defineConfig([
+	// Backend config
+	{
+		entry: ["apps/backend/src/index.ts"],
+		outDir: "apps/backend/dist",
+		format: ["esm"], // Ensure this is set to "esm"
+		dts: true,
+		clean: true,
+		tsconfig: "./apps/backend/tsconfig.json",
+	},
+	// Frontend config
+	{
+		entry: ["apps/frontend/src/app/page.tsx"],
+		outDir: "apps/frontend/dist",
+		format: ["esm"],
+		dts: true,
+		clean: true,
+		tsconfig: "./apps/frontend/tsconfig.json",
+	},
+]);

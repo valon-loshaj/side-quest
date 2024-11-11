@@ -1,16 +1,21 @@
+# .github/actions/prepare/action.yml
+name: Prepare
 description: Prepares the repo for a typical CI job
 
-name: Prepare
-
 runs:
+  using: composite
   steps:
     - uses: pnpm/action-setup@v4
       with:
         version: 9
+
     - uses: actions/setup-node@v4
       with:
-        cache: pnpm
         node-version: "20"
-    - run: pnpm install --frozen-lockfile
+        cache: "pnpm"
+
+    - name: Install dependencies
       shell: bash
-  using: composite
+      run: |
+        pnpm install --no-frozen-lockfile
+        pnpm add -Dw eslint-plugin-n eslint-config-prettier @eslint/eslintrc eslint-import-resolver-typescript eslint-plugin-import knip
