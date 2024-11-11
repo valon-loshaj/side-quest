@@ -6,14 +6,14 @@ export default defineConfig([
 	{
 		entry: ["apps/backend/src/index.ts"],
 		outDir: "apps/backend/dist",
-		format: ["cjs", "esm"],
+		format: ["esm"], // Ensure this is set to "esm"
 		dts: true,
 		clean: true,
 		tsconfig: "./apps/backend/tsconfig.json",
 	},
 	// Frontend config
 	{
-		entry: ["apps/frontend/src/app/page.tsx"], // Ensure this path is correct
+		entry: ["apps/frontend/src/app/page.tsx"],
 		outDir: "apps/frontend/dist",
 		format: ["esm"],
 		dts: true,
