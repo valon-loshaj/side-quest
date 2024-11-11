@@ -18,7 +18,7 @@ jobs:
         run: ls -R apps/backend/dist
       - name: List all files
         run: find .
-      - run: node apps/backend/dist/server.js
+      - run: node apps/backend/dist/index.js
   lint:
     name: Lint
     runs-on: ubuntu-latest
