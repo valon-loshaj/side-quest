@@ -5,7 +5,7 @@
 			"@/*": ["src/*"]
 		},
 		"target": "es2020",
-		"module": "commonjs",
+		"module": "ESNext",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
