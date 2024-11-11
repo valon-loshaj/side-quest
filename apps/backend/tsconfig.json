@@ -1,12 +1,13 @@
 {
 	"compilerOptions": {
-		"target": "es2020",
-		"module": "commonjs",
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"outDir": "dist",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"outDir": "dist"
+		"forceConsistentCasingInFileNames": true
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "dist"]
