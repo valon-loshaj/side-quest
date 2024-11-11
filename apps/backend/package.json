@@ -6,9 +6,9 @@
 	"license": "ISC",
 	"author": "",
 	"type": "module",
-	"main": "src/index.ts",
+	"main": "index.js",
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc --project tsconfig.json",
 		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
 		"start": "node dist/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -25,8 +25,5 @@
 		"prisma": "^5.22.0",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^5"
-	},
-	"engines": {
-		"node": ">=14.16"
 	}
 }
