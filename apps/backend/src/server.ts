@@ -1,6 +1,4 @@
-// apps/backend/src/server.ts
 import { Server } from "http";
-import express from "express";
 import type { Express } from "express";
 
 export function createServer(app: Express): Server {

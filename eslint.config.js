@@ -12,38 +12,66 @@ const compat = new FlatCompat({
 	baseDirectory: __dirname,
 });
 
-export default tseslint.config(
-	js.configs.recommended,
-	...tseslint.configs.recommended,
+export default [
 	{
-		plugins: {
-			n: eslintPluginN,
-			import: eslintPluginImport,
-		},
-		rules: {
-			"n/no-missing-import": "error",
-			"import/no-unresolved": "error",
-		},
-	},
-	prettier,
-	...compat.config({
-		extends: ["plugin:import/typescript"],
-		settings: {
-			"import/resolver": {
-				typescript: {
-					project: ["./apps/*/tsconfig.json"],
+		// Config files
+		files: ["*.config.{js,ts}", ".eslintrc.{js,cjs,mjs}"],
+		...tseslint.config(
+			js.configs.recommended,
+			...tseslint.configs.recommended,
+			{
+				languageOptions: {
+					parserOptions: {
+						project: null, // Disable project for config files
+					},
 				},
-				node: true,
-			},
-		},
-	}),
+			}
+		),
+	},
 	{
-		ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**"],
-		languageOptions: {
-			parserOptions: {
-				project: ["./tsconfig.json", "./apps/*/tsconfig.json"],
-				tsconfigRootDir: __dirname,
+		// Source files
+		files: ["apps/**/*.{ts,tsx}"],
+		...tseslint.config(
+			js.configs.recommended,
+			...tseslint.configs.recommended,
+			{
+				plugins: {
+					n: eslintPluginN,
+					import: eslintPluginImport,
+				},
+				rules: {
+					"n/no-missing-import": "error",
+					"import/no-unresolved": "error",
+					"@typescript-eslint/no-unused-vars": [
+						"error",
+						{
+							argsIgnorePattern: "^_",
+							varsIgnorePattern: "^_",
+						},
+					],
+				},
 			},
-		},
-	}
-);
+			prettier,
+			...compat.config({
+				extends: ["plugin:import/typescript"],
+				settings: {
+					"import/resolver": {
+						typescript: {
+							project: ["./apps/*/tsconfig.json"],
+						},
+						node: true,
+					},
+				},
+			}),
+			{
+				ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**"],
+				languageOptions: {
+					parserOptions: {
+						project: ["./apps/*/tsconfig.json"],
+						tsconfigRootDir: __dirname,
+					},
+				},
+			}
+		),
+	},
+];
