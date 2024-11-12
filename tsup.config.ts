@@ -6,10 +6,13 @@ export default defineConfig([
 	{
 		entry: ["apps/backend/src/index.ts"],
 		outDir: "apps/backend/dist",
-		format: ["esm"], // Ensure this is set to "esm"
-		dts: true,
-		clean: true,
-		tsconfig: "./apps/backend/tsconfig.json",
+		format: ["esm"],
+		target: "node20",
+		platform: "node",
+		sourcemap: true,
+		bundle: true,
+		splitting: false,
+		noExternal: ["express"],
 	},
 	// Frontend config
 	{

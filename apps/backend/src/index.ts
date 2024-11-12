@@ -1,6 +1,6 @@
 // apps/backend/src/index.ts
-import app from "./app";
-import { createServer } from "./server";
+import { createServer } from "./server.js"; // Add .js extension
+import app from "./app.js"; // Add .js extension
 
 const server = createServer(app);
 
