@@ -6,7 +6,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
       - run: pnpm build
-      - run: node --experimental-modules --es-module-specifier-resolution=node apps/backend/dist/index.js
+      - run: NODE_ENV=production node apps/backend/dist/index.js
   lint:
     name: Lint
     runs-on: ubuntu-latest

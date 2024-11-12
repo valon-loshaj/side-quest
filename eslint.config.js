@@ -1,8 +1,7 @@
-// eslint.config.js
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginN from "eslint-plugin-n";
 import { FlatCompat } from "@eslint/eslintrc";
 import path from "path";
@@ -19,9 +18,11 @@ export default tseslint.config(
 	{
 		plugins: {
 			n: eslintPluginN,
+			import: eslintPluginImport,
 		},
 		rules: {
 			"n/no-missing-import": "error",
+			"import/no-unresolved": "error",
 		},
 	},
 	prettier,
@@ -36,7 +37,6 @@ export default tseslint.config(
 			},
 		},
 	}),
-	eslintConfigPrettier,
 	{
 		ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**"],
 		languageOptions: {
@@ -44,13 +44,6 @@ export default tseslint.config(
 				project: ["./tsconfig.json", "./apps/*/tsconfig.json"],
 				tsconfigRootDir: __dirname,
 			},
-		},
-		rules: {
-			"n/no-missing-import": "error",
-			"@typescript-eslint/no-unsafe-argument": "error",
-			"@typescript-eslint/no-unsafe-assignment": "error",
-			"@typescript-eslint/no-unsafe-call": "error",
-			"import/no-unresolved": "error",
 		},
 	}
 );

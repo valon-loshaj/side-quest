@@ -1,4 +1,3 @@
-# .github/actions/prepare/action.yml
 name: Prepare
 description: Prepares the repo for a typical CI job
 
@@ -18,4 +17,7 @@ runs:
       shell: bash
       run: |
         pnpm install --no-frozen-lockfile
-        pnpm add -Dw @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-plugin-import
+        pnpm add -Dw eslint-plugin-import @typescript-eslint/eslint-plugin @typescript-eslint/parser
+        pnpm add -Dw eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y
+        cd apps/frontend && pnpm add -D eslint-config-next
+        cd ../backend && pnpm add -D eslint-plugin-node
