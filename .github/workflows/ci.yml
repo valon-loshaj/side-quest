@@ -53,8 +53,11 @@ jobs:
       - name: Type check
         run: pnpm tsc
 
-      - name: Lint
-        run: pnpm lint
+      - name: Lint Backend
+        run: pnpm lint:backend
+
+      - name: Lint Frontend
+        run: pnpm lint:frontend
 
       - name: Check formatting
         run: pnpm format --check
