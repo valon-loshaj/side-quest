@@ -90,13 +90,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - name: Run tests
-        run: pnpm test --coverage
+      - name: Run backend tests
+        run: pnpm --filter backend test:coverage
+        env:
+          CI: true
 
-      - name: Upload coverage
+      - name: Run frontend tests
+        run: pnpm --filter frontend test:coverage
+        env:
+          CI: true
+
+      - name: Upload backend coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: backend
+          directory: ./apps/backend/coverage
+          fail_ci_if_error: true
+
+      - name: Upload frontend coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: frontend
+          directory: ./apps/frontend/coverage
           fail_ci_if_error: true
 
   build:
