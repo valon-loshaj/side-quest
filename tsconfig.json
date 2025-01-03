@@ -1,17 +1,12 @@
 {
 	"compilerOptions": {
-		"declaration": true,
-		"declarationMap": true,
-		"esModuleInterop": true,
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"noEmit": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
+		"target": "ES2022",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"strict": true,
-		"target": "ES2022"
+		"esModuleInterop": true,
+		"skipLibCheck": true
 	},
-	"include": ["apps/frontend/src/**/*", "apps/backend/src/**/*"],
+	"include": ["tsup.config.ts"],
 	"exclude": ["node_modules"]
 }
