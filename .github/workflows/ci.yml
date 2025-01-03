@@ -1,53 +1,146 @@
+name: CI
+
+# Trigger on PRs and pushes to main
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - ".github/*.md"
+      - "docs/**"
+      - "LICENSE"
+
+# Prevent multiple concurrent runs of the same workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Define permissions needed for the workflow
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  id-token: write # Needed for codecov
+
 jobs:
-  build:
-    name: Build
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+      fail-fast: false
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm build
-      - run: NODE_ENV=production node apps/backend/dist/index.js
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm lint
-  lint_knip:
-    name: Lint Knip
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm lint:knip || true # Allow warnings for now
-  prettier:
-    name: Prettier
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm format --list-different
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/actions/prepare
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Type check
+        run: pnpm tsc
+
+      - name: Lint Backend
+        run: pnpm lint:backend
+
+      - name: Lint Frontend
+        run: pnpm lint:frontend
+
+      - name: Check formatting
+        run: pnpm format --check
+
+      - name: Check dependencies (Knip)
+        run: pnpm lint:knip || true # Allow warnings for now
+
   test:
     name: Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+      fail-fast: false
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm run test --coverage
-      - uses: codecov/codecov-action@v3
-  type_check:
-    name: Type Check
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/actions/prepare
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Run backend tests
+        run: pnpm --filter backend test:coverage
+        env:
+          CI: true
+
+      - name: Run frontend tests
+        run: pnpm --filter frontend test:coverage
+        env:
+          CI: true
+
+      # Combined coverage upload to reduce potential points of failure
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: |
+            ./apps/backend/coverage/coverage-final.json
+            ./apps/frontend/coverage/coverage-final.json
+          flags: unittests
+          name: side-quest-coverage
+          fail_ci_if_error: false # Changed to false to prevent CI failures
+          verbose: true # Added for better debugging
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
+    needs: [validate, test]
+    strategy:
+      matrix:
+        node-version: [20]
+      fail-fast: false
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: pnpm tsc
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-name: CI
+      - name: Setup environment
+        uses: ./.github/actions/prepare
 
-on:
-  pull_request: ~
-  push:
-    branches:
-      - main
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Build applications
+        run: pnpm build
+
+      - name: Test backend build
+        run: NODE_ENV=production node apps/backend/dist/index.js

@@ -1,27 +1,53 @@
-jobs:
-  post_release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: echo "npm_version=$(npm pkg get version | tr -d '"')" >> "$GITHUB_ENV"
-      - uses: apexskier/github-release-commenter@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          comment-template: |
-            :tada: This is included in version {release_link} :tada:
-
-            The release is available on:
-
-            * [GitHub releases](https://github.com/valon-loshaj/side-quest/releases/tag/{release_tag})
-            * [npm package (@latest dist-tag)](https://www.npmjs.com/package/side-quest/v/${{ env.npm_version }})
-
-            Cheers! 📦🚀
-
 name: Post Release
 
 on:
   release:
     types:
       - published
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+# Prevent multiple post-release processes from running simultaneously
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  post_release:
+    name: Post Release Tasks
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup environment
+        uses: ./.github/actions/prepare
+
+      - name: Get npm version
+        id: package-version
+        run: echo "npm_version=$(node -p "require('./package.json').version")" >> "$GITHUB_ENV"
+
+      - name: Comment on related issues and PRs
+        uses: apexskier/github-release-commenter@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          comment-template: |
+            :tada: This is included in version {release_link} :tada:
+
+            The release is available on:
+            * [GitHub releases](https://github.com/valon-loshaj/side-quest/releases/tag/{release_tag})
+            * [npm package (@latest dist-tag)](https://www.npmjs.com/package/side-quest/v/${{ env.npm_version }})
+
+            Cheers! 📦🚀
+
+      - name: Update release documentation
+        if: success()
+        run: |
+          echo "Release ${{ env.npm_version }} has been successfully published"
