@@ -5,18 +5,9 @@
 	"singleQuote": false,
 	"tabWidth": 2,
 	"useTabs": true,
-	"printWidth": 80,
-	"overrides": [
-		{
-			"files": ["*.yaml", "*.yml", ".nvmrc"],
-			"options": {
-				"parser": "yaml"
-			}
-		}
-	],
-	"plugins": [
-		"prettier-plugin-curly",
-		"prettier-plugin-sh",
-		"prettier-plugin-packagejson"
-	]
+	"printWidth": 100,
+	"bracketSpacing": true,
+	"arrowParens": "always",
+	"endOfLine": "lf",
+	"bracketSameLine": false
 }

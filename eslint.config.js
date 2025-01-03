@@ -1,77 +1,97 @@
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettier from "eslint-config-prettier";
-import eslintPluginImport from "eslint-plugin-import";
-import eslintPluginN from "eslint-plugin-n";
-import { FlatCompat } from "@eslint/eslintrc";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-});
+import typescript from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import prettier from "eslint-plugin-prettier";
 
 export default [
+	// Base JS config
+	js.configs.recommended,
 	{
-		// Config files
-		files: ["*.config.{js,ts}", ".eslintrc.{js,cjs,mjs}"],
-		...tseslint.config(
-			js.configs.recommended,
-			...tseslint.configs.recommended,
-			{
-				languageOptions: {
-					parserOptions: {
-						project: null, // Disable project for config files
-					},
-				},
-			}
-		),
+		files: ["**/*.{js,jsx,ts,tsx}"],
+		plugins: {
+			prettier,
+		},
+		rules: {
+			"prettier/prettier": "error",
+		},
 	},
+	// TypeScript config
 	{
-		// Source files
-		files: ["apps/**/*.{ts,tsx}"],
-		...tseslint.config(
-			js.configs.recommended,
-			...tseslint.configs.recommended,
-			{
-				plugins: {
-					n: eslintPluginN,
-					import: eslintPluginImport,
-				},
-				rules: {
-					"n/no-missing-import": "error",
-					"import/no-unresolved": "error",
-					"@typescript-eslint/no-unused-vars": [
-						"error",
-						{
-							argsIgnorePattern: "^_",
-							varsIgnorePattern: "^_",
-						},
-					],
+		files: ["**/*.{ts,tsx}"],
+		languageOptions: {
+			parser: typescriptParser,
+			parserOptions: {
+				ecmaVersion: "latest",
+				sourceType: "module",
+				project: ["./apps/*/tsconfig.json"],
+				tsconfigRootDir: ".",
+			},
+		},
+		plugins: {
+			"@typescript-eslint": typescript,
+		},
+		rules: {
+			...typescript.configs["recommended"].rules,
+			"@typescript-eslint/no-unused-vars": "error",
+			"@typescript-eslint/explicit-function-return-type": "off",
+			"@typescript-eslint/explicit-module-boundary-types": "off",
+			"@typescript-eslint/no-explicit-any": "warn",
+		},
+	},
+	// React config
+	{
+		files: ["**/frontend/**/*.{jsx,tsx}"],
+		languageOptions: {
+			parserOptions: {
+				ecmaVersion: "latest",
+				sourceType: "module",
+				ecmaFeatures: {
+					jsx: true,
 				},
 			},
-			prettier,
-			...compat.config({
-				extends: ["plugin:import/typescript"],
-				settings: {
-					"import/resolver": {
-						typescript: {
-							project: ["./apps/*/tsconfig.json"],
-						},
-						node: true,
-					},
-				},
-			}),
-			{
-				ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**"],
-				languageOptions: {
-					parserOptions: {
-						project: ["./apps/*/tsconfig.json"],
-						tsconfigRootDir: __dirname,
-					},
-				},
-			}
-		),
+			globals: {
+				document: true,
+				window: true,
+				JSX: true,
+				React: true,
+			},
+		},
+		plugins: {
+			react,
+			"react-hooks": reactHooks,
+		},
+		settings: {
+			react: {
+				version: "detect",
+			},
+		},
+		rules: {
+			...react.configs.recommended.rules,
+			...reactHooks.configs.recommended.rules,
+			"react/react-in-jsx-scope": "off",
+			"react/prop-types": "off",
+		},
+	},
+	// Node/Express config
+	{
+		files: ["**/backend/**/*.ts"],
+		languageOptions: {
+			parserOptions: {
+				project: ["./apps/backend/tsconfig.json"],
+				tsconfigRootDir: ".",
+			},
+			globals: {
+				process: true,
+				console: true,
+				module: true,
+				require: true,
+			},
+		},
+		rules: {
+			"@typescript-eslint/no-misused-promises": "error",
+			"@typescript-eslint/no-floating-promises": "error",
+		},
 	},
 ];
