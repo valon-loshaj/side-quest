@@ -1,10 +1,15 @@
-import { Server } from "http";
-import type { Express } from "express";
+import express from "express";
+import routes from "./routes";
 
-export function createServer(app: Express): Server {
-	return app.listen(process.env.PORT || 3001, () => {
-		console.log(`Server running on port ${process.env.PORT || 3001}`);
-	});
-}
+const app = express();
+const port = process.env.PORT || 3000;
 
-export type { Express, Server };
+// Basic middleware for JSON parsing
+app.use(express.json());
+
+// Routes
+app.use("/api", routes);
+
+app.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+});
