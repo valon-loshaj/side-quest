@@ -47,6 +47,14 @@ Side Quest is a unique task management application that brings the excitement of
   - pnpm for package management
   - Vitest for testing
 
+## 🚀 Database Design
+
+Check out our Entity Relationship Diagram to understand the data structure of Side Quest:
+
+<p align="center">
+  <img src="erd/side-quest.drawio.png" alt="Side Quest ERD" width="600"/>
+</p>
+
 ## 🚀 Getting Started
 
 > ⚠️ This project is currently in early development. Setup instructions will be provided once we reach a stable development version.
