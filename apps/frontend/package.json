@@ -14,7 +14,8 @@
 	"dependencies": {
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^7.1.1"
+		"react-router-dom": "^7.1.1",
+		"@side-quest/shared": "workspace:*"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.6.3",

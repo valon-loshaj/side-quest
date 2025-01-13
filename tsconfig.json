@@ -5,8 +5,13 @@
 		"moduleResolution": "bundler",
 		"strict": true,
 		"esModuleInterop": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@side-quest/shared/*": ["apps/shared/*"]
+		}
 	},
 	"include": ["tsup.config.ts"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules"],
+	"references": [{ "path": "apps/frontend" }, { "path": "apps/backend" }, { "path": "apps/shared" }]
 }
