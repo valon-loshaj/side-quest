@@ -11,7 +11,7 @@
 			"@side-quest/shared/*": ["apps/shared/*"]
 		}
 	},
-	"include": ["tsup.config.ts"],
+	"include": ["tsup.config.ts", "apps/**/*"],
 	"exclude": ["node_modules"],
-	"references": [{ "path": "apps/frontend" }, { "path": "apps/backend" }, { "path": "apps/shared" }]
+	"composite": true
 }
