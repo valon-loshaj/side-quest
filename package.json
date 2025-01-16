@@ -70,5 +70,8 @@
 	},
 	"publishConfig": {
 		"provenance": true
-	}
+	},
+	"workspaces": [
+		"apps/*"
+	]
 }

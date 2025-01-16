@@ -65,7 +65,7 @@ export interface ActiveQuestSession {
 	updatedAt: Date;
 }
 
-export interface QuestionProgress {
+export interface QuestProgress {
 	id: string;
 	userCharacterId: string;
 	questId: string;

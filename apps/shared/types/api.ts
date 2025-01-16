@@ -6,6 +6,25 @@ export interface ApiError {
 	details?: unknown;
 }
 
+// Define Character types
+export interface Character {
+	id: string;
+	name: string;
+	characterClass: string;
+	avatarUrl: string;
+	characterSkills: Array<{
+		skill: {
+			id: string;
+			name: string;
+			description: string;
+			effectiveLevel: string;
+			iconUrl: string;
+		};
+	}>;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export type ApiEndpoints = {
 	"/auth/login": {
 		POST: {
@@ -16,6 +35,23 @@ export type ApiEndpoints = {
 			response: {
 				user: User;
 				token: string;
+			};
+		};
+	};
+	"/characters": {
+		GET: {
+			response: {
+				characters: Character[];
+			};
+		};
+		POST: {
+			body: {
+				name: string;
+				characterClass: string;
+				avatarUrl: string;
+			};
+			response: {
+				character: Character;
 			};
 		};
 	};

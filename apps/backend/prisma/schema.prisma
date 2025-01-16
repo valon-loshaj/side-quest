@@ -13,17 +13,121 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id                String              @id @default(uuid())
+  email             String              @unique
+  name              String
+  userCharacters    UserCharacter[]
+  quests            Quest[]
+  activeQuests      ActiveQuestSession[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+}
+
+model Character {
+  id              String            @id @default(uuid())
+  name            String
+  characterClass  String
+  avatarUrl       String
+  userCharacters  UserCharacter[]
+  characterSkills CharacterSkill[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Skill {
+  id              String            @id @default(uuid())
+  name            String
+  description     String
+  effectiveLevel  String
+  iconUrl         String
+  characterSkills CharacterSkill[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model UserCharacter {
+  id              String               @id @default(uuid())
+  character       Character            @relation(fields: [characterId], references: [id])
+  characterId     String
+  user            User                 @relation(fields: [userId], references: [id])
+  userId          String
+  level           Int
+  currentXp       Int
+  nextLevelXp     Int
+  lastPlayedAt    DateTime
+  activeQuests    ActiveQuestSession[]
+  questProgress   QuestProgress[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+}
+
+model CharacterSkill {
+  id            String    @id @default(uuid())
+  character     Character @relation(fields: [characterId], references: [id])
+  characterId   String
+  skill         Skill     @relation(fields: [skillId], references: [id])
+  skillId       String
+  isBaseSkill   Boolean
+  unllockLevel  Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Quest {
+  id                String               @id @default(uuid())
+  user              User                 @relation(fields: [userId], references: [id])
+  userId            String
+  title             String
+  description       String
+  type              QuestType
+  estimatedDuration Int
+  remainingDuration Int
+  sortOrder         Int
+  activeSessions    ActiveQuestSession[]
+  questProgress     QuestProgress[]
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+}
+
+model ActiveQuestSession {
+  id              String        @id @default(uuid())
+  quest           Quest         @relation(fields: [questId], references: [id])
+  questId         String
+  userCharacter   UserCharacter @relation(fields: [userCharacterId], references: [id])
+  userCharacterId String
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  sessionStart    DateTime
+  lastPause       DateTime
+  accumulatedTime Int
+  isActive        Boolean
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model QuestProgress {
+  id              String        @id @default(uuid())
+  userCharacter   UserCharacter @relation(fields: [userCharacterId], references: [id])
+  userCharacterId String
+  quest           Quest         @relation(fields: [questId], references: [id])
+  questId         String
+  status          QuestStatus
+  timeSpent       Int
+  xpEarned        Int
+  startedAt       DateTime
+  completedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum QuestType {
+  MAIN
+  SIDE
+}
+
+enum QuestStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
